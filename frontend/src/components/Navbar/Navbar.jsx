@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Zap } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Button from '../ui/Button';
@@ -8,8 +8,14 @@ const navItems = ['Home', 'Stations', 'Features', 'About', 'Contact'];
 
 function Navbar() {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
 
   const handleNavSelect = () => setOpen(false);
+
+  // Always reset the drawer after any navigation (route or hash).
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname, location.hash, location.key]);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -34,12 +40,16 @@ function Navbar() {
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 50, background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(16px)', borderBottom: '1px solid #E5E7EB' }}>
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.95rem 0' }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', fontWeight: 700, fontSize: '1.1rem', color: '#1E293B' }}>
+        <Link
+          to="/"
+          onClick={handleNavSelect}
+          style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', fontWeight: 700, fontSize: '1.1rem', color: '#1E293B' }}
+        >
           <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 38, borderRadius: 12, background: '#34C759', color: 'white' }}>
             <Zap size={20} />
           </span>
           VoltGo
-        </a>
+        </Link>
 
         <nav aria-label="Primary" style={{ display: 'flex', gap: '1.4rem', alignItems: 'center' }} className="desktop-nav">
           {navItems.map((item) => (
@@ -88,26 +98,40 @@ function Navbar() {
               style={{ position: 'fixed', top: 0, right: 0, bottom: 0, width: 'min(84vw, 360px)', height: '100vh', background: '#FFFFFF', zIndex: 41, boxShadow: '-16px 0 40px rgba(2, 6, 23, 0.16)', display: 'flex', flexDirection: 'column', padding: '1rem 1rem 1.25rem' }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.2rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', fontWeight: 700, color: '#1E293B' }}>
+                <Link
+                  to="/"
+                  onClick={handleNavSelect}
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', fontWeight: 700, color: '#1E293B' }}
+                >
                   <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: 12, background: '#34C759', color: 'white' }}>
                     <Zap size={18} />
                   </span>
                   VoltGo
-                </div>
+                </Link>
                 <button aria-label="Close navigation" onClick={handleNavSelect} style={{ border: 'none', background: 'transparent', cursor: 'pointer', padding: '0.3rem' }}>
                   <X size={22} />
                 </button>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
                 {navItems.map((item) => (
-                  <a key={item} href={`#${item.toLowerCase()}`} className="nav-link" style={{ color: '#1E293B', fontWeight: 600, padding: '0.85rem 0.25rem', borderRadius: 10 }} onClick={handleNavSelect}>
+                  <a
+                    key={item}
+                    href={item === 'Home' ? '/' : `/#${item.toLowerCase()}`}
+                    className="nav-link"
+                    style={{ color: '#1E293B', fontWeight: 600, padding: '0.85rem 0.25rem', borderRadius: 10 }}
+                    onClick={handleNavSelect}
+                  >
                     {item}
                   </a>
                 ))}
               </div>
               <div style={{ marginTop: '1rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <Button to="/login" variant="secondary" icon={false}>Login</Button>
-                <Button to="/register" icon={false}>Register</Button>
+                <Button to="/login" variant="secondary" icon={false} onClick={handleNavSelect}>
+                  Login
+                </Button>
+                <Button to="/register" icon={false} onClick={handleNavSelect}>
+                  Register
+                </Button>
               </div>
             </motion.aside>
           </>
