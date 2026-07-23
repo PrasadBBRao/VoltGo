@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Menu, X, Zap } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Button from '../ui/Button';
@@ -33,7 +34,7 @@ function Navbar() {
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 50, background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(16px)', borderBottom: '1px solid #E5E7EB' }}>
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.95rem 0' }}>
-        <a href="#home" style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', fontWeight: 700, fontSize: '1.1rem', color: '#1E293B' }}>
+        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', fontWeight: 700, fontSize: '1.1rem', color: '#1E293B' }}>
           <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 38, borderRadius: 12, background: '#34C759', color: 'white' }}>
             <Zap size={20} />
           </span>
@@ -49,8 +50,8 @@ function Navbar() {
         </nav>
 
         <div style={{ display: 'flex', gap: '0.75rem' }} className="desktop-actions">
-          <Button href="#login" variant="secondary" icon={false}>Login</Button>
-          <Button href="#register" icon={false}>Register</Button>
+          <Button to="/login" variant="secondary" icon={false}>Login</Button>
+          <Button to="/register" icon={false}>Register</Button>
         </div>
 
         <button
@@ -105,8 +106,8 @@ function Navbar() {
                 ))}
               </div>
               <div style={{ marginTop: '1rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <Button href="#login" variant="secondary" icon={false}>Login</Button>
-                <Button href="#register" icon={false}>Register</Button>
+                <Button to="/login" variant="secondary" icon={false}>Login</Button>
+                <Button to="/register" icon={false}>Register</Button>
               </div>
             </motion.aside>
           </>
